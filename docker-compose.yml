@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  web:
+    image: fireguard/php-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/project
