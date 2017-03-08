@@ -69,20 +69,20 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form(null, ['method' => 'DELETE']);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8"><input name="_method" id="_method-id" value="DELETE" type="hidden" class="form-control "></form>',
+            '<form method="POST" action="" accept-charset="UTF-8"><script>function addEventOnLoad(fn) { if (window.addEventListener) window.addEventListener("load", fn, false); else if (window.attachEvent) window.attachEvent("onload", fn);}</script><input name="_method" id="_method-id" value="DELETE" type="hidden" class="form-control "></form>',
             $form->render()
         );
 
         $form = new Form();
         $form->addElement('name', TextElement::class);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" value="" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
+            '<form method="POST" action="" accept-charset="UTF-8"><script>function addEventOnLoad(fn) { if (window.addEventListener) window.addEventListener("load", fn, false); else if (window.attachEvent) window.attachEvent("onload", fn);}</script><div id="name-form-group" class="form-group" ><input name="name" id="name-id" value="" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
             $form->render()
         );
 
         $form = new Form(null, ['files' => true]);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" enctype="multipart/form-data"></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" enctype="multipart/form-data"><script>function addEventOnLoad(fn) { if (window.addEventListener) window.addEventListener("load", fn, false); else if (window.attachEvent) window.attachEvent("onload", fn);}</script></form>',
             $form->render()
         );
     }

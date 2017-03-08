@@ -54,7 +54,6 @@ class Form
      */
     protected $spoofedMethods = ['DELETE', 'PATCH', 'PUT'];
 
-
     /**
      * The types of inputs to not fill values on by default.
      *
@@ -97,7 +96,7 @@ class Form
 
     protected function extractValueForModel($field, $defaultValue)
     {
-        return $this->model instanceOf FormElementInterface ? $this->model->getElementValue($field) : $defaultValue;
+      return $this->model instanceOf FormModelInterface ? $this->model->getElementValue($field) : $defaultValue;
     }
 
     /**
@@ -186,6 +185,7 @@ class Form
     public function render()
     {
         $html = $this->getFormOpenTag();
+        $html .= $this->getScriptLoaderFunction();
         $html .= $this->getSpoofedMethod();
         $html .= $this->getInputToken();
         foreach ($this->elements as $element) {
@@ -193,5 +193,15 @@ class Form
         }
         $html .= '</form>';
         return $html;
+    }
+
+    public function getScriptLoaderFunction()
+    {
+        return '<script>'.
+            'function addEventOnLoad(fn) {'.
+            ' if (window.addEventListener) window.addEventListener("load", fn, false);'.
+            ' else if (window.attachEvent) window.attachEvent("onload", fn);'.
+            '}'.
+        '</script>';
     }
 }

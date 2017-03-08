@@ -85,7 +85,7 @@ class HtmlHelper
             $placement = !empty($options['help-placement']) ? $options['help-placement'] : 'top';
             $title = !empty($options['help-title']) ? $options['help-title'] : 'Descrição';
             $btnHelp = '  <a id="'.$aID.'" class="btn-help" tabindex="0" data-placement="'.$placement.'" role="button" data-toggle="popover" data-trigger="hover" title="'.$title.'" data-content="'.$options['help'].'">'.( isset($options['label']) ? $options['label'] : '' ).' <i class="fa fa-question-circle"></i></a>';
-            $btnHelp .= ' <script>jQuery( document ).ready(function() { jQuery(\'#'.$aID.'\').popover(); });</script>';
+            $btnHelp .= ' <script> addEventOnLoad(function(){ jQuery(\'#'.$aID.'\').popover(); });</script>';
             $options['label'] = $btnHelp;
         }
 
@@ -95,7 +95,7 @@ class HtmlHelper
     static protected function getMask(array $options)
     {
         if (empty($options['id']) || empty($options['mask'])) return '';
-        $html  = '<script> jQuery(document).ready(function() { ';
+        $html  = '<script> addEventOnLoad( function(){ ';
         $html .= 'jQuery("#'.$options['id'].'").mask("'. $options['mask'].'", { reverse: '.(isset($options['reverse-mask']) ? ($options['reverse-mask'] ? 'true' : 'false') : 'true').' }); ';
         $html .= '});</script>';
         return $html;

@@ -133,12 +133,28 @@ abstract class AbstractElement implements FormElementInterface
     {
         $ignoreAttributes = [
             'grid', 'form-group-class', 'label', 'before-input', 'after-input', 'mask', 'reverse-mask', 'init', 'url',
-            'help', 'help-title', 'help-placement'
+            'help', 'help-title', 'help-placement', 'danger'
         ];
         $newOptions = array_filter($options, function($key) use ($ignoreAttributes){
             return !in_array($key, $ignoreAttributes);
         }, ARRAY_FILTER_USE_KEY);
         return HtmlHelper::attributes($newOptions);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isDanger()
+    {
+        return !empty($this->options['danger']) && $this->options['danger'];
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isRequired()
+    {
+        return !empty($this->options['required']) && $this->options['required'];
     }
 
     /**
