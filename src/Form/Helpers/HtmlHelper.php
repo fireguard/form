@@ -11,6 +11,8 @@
 
 namespace Fireguard\Form\Helpers;
 
+use Fireguard\Form\Elements\LabelElement;
+
 class HtmlHelper
 {
     /**
@@ -19,11 +21,10 @@ class HtmlHelper
      * @param  array  $attributes
      * @return string
      */
-    static public function attributes($attributes)
+    static public function attributes(array $attributes)
     {
-        $html = array();
-
-        foreach ((array) $attributes as $key => $value) {
+        $html = [];
+        foreach ($attributes as $key => $value) {
             $element = self::attributeElement($key, $value);
 
             if ( ! is_null($element) ) $html[] = $element;
@@ -88,7 +89,7 @@ class HtmlHelper
             $options['label'] = $btnHelp;
         }
 
-        return '<label for="'.$options['id'].'">'.$options['label'].'</label>';
+        return (new LabelElement($options['id']))->setValue($options['label'])->render();
     }
 
     static protected function getMask(array $options)
