@@ -11,10 +11,11 @@
 
 namespace Fireguard\Form\Laravel;
 
-
 class FormModelEloquentTraitTest extends \PHPUnit_Framework_TestCase
 {
     use FormModelEloquentTrait;
+
+    public static $functions;
 
     protected $value;
 

@@ -9,9 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Fireguard\Form;
+namespace Fireguard\Form\Contracts;
 
-class FormBuilder
+interface FormInputInterface
 {
-
+    /**
+     * @return string
+     */
+    public function getType();
 }
