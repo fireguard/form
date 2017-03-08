@@ -166,6 +166,7 @@ abstract class AbstractElement implements FormElementInterface
     {
         $options = $this->getFormattedOptions();
         $options['class'] = "form-control ".((isset($options['class'])) ? $options['class'] : '');
+        $options['class'] .= $this->isDanger() ? ' input-danger' : '';
         $options['attrs'] = $this->getElementAttributes($options);
         $html = '<input'.$options['attrs']. '>';
         if (!isset($options['type']) || $options['type'] != 'hidden') $html = HtmlHelper::makeHtml($options, $html);

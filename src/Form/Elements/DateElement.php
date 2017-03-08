@@ -33,7 +33,7 @@ class DateElement extends AbstractElement implements FormElementInterface, FormI
         $dangerClass = ($this->isDanger() ? 'input-danger-addon' : '');
         $requiredClass = ($this->isRequired() ? 'input-required-addon' : '');
         $this->options['after-input']  = '<span class="input-group-addon '. $dangerClass. $requiredClass .' "><i class="fa fa-calendar"></i></span></div>';
-        $this->options['class'] = $this->getClassForDataPicker();
+        $this->options['class'] = 'datepicker';
         return $this->makeInput();
     }
 
@@ -53,13 +53,4 @@ class DateElement extends AbstractElement implements FormElementInterface, FormI
             throw new InvalidDateValueException($e->getMessage(), $e->getCode());
         }
     }
-
-    /**
-     * @return string
-     */
-    protected function getClassForDataPicker()
-    {
-        return 'datepicker '.($this->isDanger() ? 'input-danger' : '');
-    }
-
 }
