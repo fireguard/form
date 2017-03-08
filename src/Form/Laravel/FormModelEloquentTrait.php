@@ -13,7 +13,7 @@ namespace Fireguard\Form\Laravel;
 
 trait FormModelEloquentTrait
 {
-    public function getElementValue(string $field)
+    public function getElementValue($field)
     {
         $defaultValue = isset($this->{$field}) ? $this->{$field} : '';
         if (function_exists('old')) return old($field, $defaultValue);

@@ -8,3 +8,10 @@ php:
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
+
+addons:
+    code_climate:
+        repo_token: 1cc46f48527293520c356f498521015be14add1c518bc34c42088ce9e42b0fbd
+
+script:
+  - "phpunit --process-isolation --coverage-clover build/logs/clover.xml"
