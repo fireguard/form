@@ -40,6 +40,10 @@ abstract class AbstractElement implements FormElementInterface
      */
     protected $skipValueTypes = ['file', 'password', 'checkbox', 'radio'];
 
+    /**
+     * @var string
+     */
+    protected $scripts = '';
 
     /**
      * AbstractElement constructor.
@@ -169,8 +173,97 @@ abstract class AbstractElement implements FormElementInterface
         $options['class'] .= $this->isDanger() ? ' input-danger' : '';
         $options['attrs'] = $this->getElementAttributes($options);
         $html = '<input'.$options['attrs']. '>';
-        if (!isset($options['type']) || $options['type'] != 'hidden') $html = HtmlHelper::makeHtml($options, $html);
+        if (!isset($options['type']) || $options['type'] != 'hidden') $html = $this->makeElement($options, $html);
         return $html;
+    }
+
+    /**
+     * Make an Element
+     * @param array $options
+     * @param $html
+     * @return string
+     */
+    protected function makeElement(array $options, $html)
+    {
+        if (!empty($options['before-input'])) $html =  $options['before-input'].$html;
+        $html = $this->getLabel($options).$html;
+        if (!empty($options['after-input']))  $html .=  $options['after-input'];
+        $html .= $this->getDivError($options);
+        $html = $this->getFormGroup($options, $html);
+
+        if (!empty($options['script'])) $this->appendScript($options['script']);
+        if (!empty($options['mask'])) $this->appendScript($this->getMaskScript($options));
+
+        return $this->getGrid($options, $html);
+    }
+
+
+    protected function getDivError($options)
+    {
+        if (empty($options['name'])) return '';
+        return '<div class="error-message" id="'.$options['name'].'-input-message"></div>';
+    }
+
+    protected function getLabel(array $options)
+    {
+        if (empty($options['id']) || empty($options['label'])) return '';
+
+        return (new LabelElement($options['id']))
+            ->setOptions([
+                'id' =>$options['id'],
+                'help' => isset($options['help']) ? $options['help'] : null ,
+                'help-title' => isset($options['help-title']) ? $options['help-title'] : null ,
+                'help-placement' => isset($options['help-placement']) ? $options['help-placement'] : null ,
+            ])
+            ->setValue($options['label'])->render();
+    }
+
+    protected function getMaskScript(array $options)
+    {
+        if (empty($options['id']) && empty($options['mask'])) return '';
+        return 'jQuery("#'.$options['id'].'").mask("'. $options['mask'].'", { reverse: '.(isset($options['reverse-mask']) ? ($options['reverse-mask'] ? 'true' : 'false') : 'true').' });';
+    }
+
+    protected function getFormGroup(array $options, $html)
+    {
+        if (empty($options['name'])) return $html;
+        $formClass = !empty($options['form-group-class']) ? $options['form-group-class'] : 'form-group';
+        $formClass.= (!empty($options['required']) && $options['required'] === true ) ? ' required' : '';
+        return '<div id="'.$options['name'].'-form-group" class="'.$formClass.'" >'.$html.'</div>';
+    }
+
+    protected function getGrid(array $options, $html)
+    {
+        if(empty($options['grid']) || empty($options['name'])) return $html;
+        return '<div id="'.$options['name'].'-grid" class="'.$options['grid'].'" >'.$html.'</div>';
+    }
+
+    /**
+     * @return string
+     */
+    public function getScripts()
+    {
+        return $this->scripts;
+    }
+
+    /**
+     * @param $scripts
+     * @return $this
+     */
+    public function setScripts($scripts)
+    {
+        $this->scripts = $scripts;
+        return $this;
+    }
+
+    /**
+     * @param $script
+     * @return $this
+     */
+    public function appendScript($script)
+    {
+        $this->scripts .= $script;
+        return $this;
     }
 
 

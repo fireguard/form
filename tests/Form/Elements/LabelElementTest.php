@@ -19,14 +19,25 @@ class LabelElementTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->element = (new LabelElement('name-for-input-text-id'))->setValue('Value for Label');
+        $this->element = (new LabelElement('name-for-label'))->setValue('Value for Label');
     }
 
     public function testRender()
     {
         $this->assertEquals(
-            '<label for="name-for-input-text-id">Value for Label</label>',
+            '<label for="name-for-label">Value for Label</label>',
             $this->element->render()
+        );
+
+        $element = (new LabelElement('name-for-label-with-help', [
+            'help' => 'Text for Help',
+            'help-title' => 'Text for Title',
+            'help-placement' => 'left'
+        ]))->setValue('Value for Label');
+
+        $this->assertEquals(
+            '<label for="name-for-label-with-help">  <a id="name-for-label-with-help_help" class="btn-help" tabindex="0" data-placement="left" role="button" data-toggle="popover" data-trigger="hover" title="Text for Title" data-content="Text for Help">Value for Label <i class="fa fa-question-circle"></i></a></label>',
+            $element->render()
         );
     }
 }

@@ -17,8 +17,9 @@ class LabelElement extends AbstractElement implements FormElementInterface
 {
     public function render()
     {
-        $options = $this->clearLabelOptions();
         $value = $this->formatLabel($this->getName(), $this->getValue());
+        $value = $this->getHelp($this->options, $value);
+        $options = $this->getClearOptions();
 
         return '<label for="' .$this->getName(). '"' .$this->getElementAttributes($options). '>' . $value . '</label>';
     }
@@ -39,12 +40,23 @@ class LabelElement extends AbstractElement implements FormElementInterface
     /**
      * @return array
      */
-    protected function clearLabelOptions()
+    protected function getClearOptions()
     {
         $options = $this->getFormattedOptions();
-        if (isset($options['value'])) unset($options['value']);
-        if (isset($options['name'])) unset($options['name']);
-        if (isset($options['id'])) unset($options['id']);
-        return $options;
+        return array_filter($options, function ($option) {
+            return !in_array($option, ['id', 'name', 'value', 'help', 'help-placement', 'help-title']);
+        }, ARRAY_FILTER_USE_KEY );
+    }
+
+    protected function getHelp($options, $value)
+    {
+        if ( !empty($options['help']) ){
+            $aID = $this->getName().'_help';
+            $placement = !empty($options['help-placement']) ? $options['help-placement'] : 'top';
+            $title = !empty($options['help-title']) ? $options['help-title'] : 'Descrição';
+            $btnHelp = '  <a id="'.$aID.'" class="btn-help" tabindex="0" data-placement="'.$placement.'" role="button" data-toggle="popover" data-trigger="hover" title="'.$title.'" data-content="'.$options['help'].'">'.$value.' <i class="fa fa-question-circle"></i></a>';
+            $value = $btnHelp;
+        }
+        return $value;
     }
 }

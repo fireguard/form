@@ -36,6 +36,11 @@ class Form
     protected $token = null;
 
     /**
+     * @var string
+     */
+    protected $scripts = '';
+
+    /**
      * @var array
      */
     private $options;
@@ -180,28 +185,31 @@ class Form
     }
 
     /**
+     * @param bool $withScripts
      * @return string
      */
-    public function render()
+    public function render($withScripts = false)
     {
         $html = $this->getFormOpenTag();
-        $html .= $this->getScriptLoaderFunction();
         $html .= $this->getSpoofedMethod();
         $html .= $this->getInputToken();
+        $this->scripts = '';
         foreach ($this->elements as $element) {
             $html .= $element->render();
+            $this->scripts .= $element->getScripts();
         }
+        if($withScripts) $html .= $this->renderScripts();
         $html .= '</form>';
         return $html;
     }
 
-    public function getScriptLoaderFunction()
+    public function renderScripts()
     {
-        return '<script>'.
-            'function addEventOnLoad(fn) {'.
-            ' if (window.addEventListener) window.addEventListener("load", fn, false);'.
-            ' else if (window.attachEvent) window.attachEvent("onload", fn);'.
-            '}'.
-        '</script>';
+        $scripts = '';
+        foreach ($this->elements as $element) {
+            $scripts .= $element->getScripts();
+        }
+        $scripts = '<script>var fn = function() { jQuery(".btn-help").popover(); '.$scripts.'}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script>';
+        return $scripts;
     }
 }
