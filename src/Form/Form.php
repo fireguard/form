@@ -11,7 +11,6 @@
 
 namespace Fireguard\Form;
 
-use Fireguard\Form\Contracts\FormElementInterface;
 use Fireguard\Form\Contracts\FormModelInterface;
 use Fireguard\Form\Elements\HiddenElement;
 use Fireguard\Form\Exceptions\InvalidElementTypeException;
@@ -136,7 +135,7 @@ class Form
 
         $attributes = array_merge($attributes, array_diff_key($this->options, $this->reserved));
 
-        return '<form' . HtmlHelper::attributes($attributes) . '>';
+        return '<form' . (new HtmlHelper())->attributes($attributes) . '>';
     }
 
     protected function getMethod()

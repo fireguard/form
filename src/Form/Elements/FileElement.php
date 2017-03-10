@@ -46,7 +46,7 @@ class FileElement extends AbstractElement implements FormElementInterface, FormI
         $requiredClass = ($this->html->isRequired($this->options) ? 'input-required-addon ' : '');
         $inputAddon = 'input-group-addon '. $dangerClass. $requiredClass;
         $classInput = 'fakeupload form-control '.($this->html->isDanger($this->options) ? 'input-danger ' : '');
-        $input = '<input id="fakeupload-'.$name.'-id" name="fakeupload-'.$name.'" disabled="disabled" class="'.$classInput.'" type="text" placeholder="'._('Clique para selecionar um arquivo').'" '.$required.' />';
+        $input = '<input id="fakeupload-'.$name.'-id" name="fakeupload-'.$name.'" disabled="disabled" class="'.$classInput.'" type="text" placeholder="Clique para selecionar um arquivo" '.$required.' />';
         $addOn = '<span class="'.$inputAddon.'"><i class="fa fa-ellipsis-h"></i></span>';
         return '<div class="input-group">'.$input.$addOn.'</div>';
     }
