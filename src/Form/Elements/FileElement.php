@@ -35,7 +35,7 @@ class FileElement extends AbstractElement implements FormElementInterface, FormI
 
     public function getEventOnChange($name)
     {
-        return 'document.getElementById("fakeupload-'.$name.'").value = ( this.files.length > 1 ) ? this.value +" + "+ (this.files.length - 1) +" outros arquivos selecionados": this.value  ';
+        return 'document.getElementById("fakeupload-'.$name.'-id").value = ( this.files.length > 1 ) ? this.value +" + "+ (this.files.length - 1) +" outros arquivos selecionados": this.value  ';
     }
 
     protected function getFakeInput($name)
