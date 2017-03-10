@@ -19,7 +19,7 @@ class HtmlHelper
      * @param  array  $attributes
      * @return string
      */
-    static public function attributes(array $attributes)
+    public function attributes(array $attributes)
     {
         $html = [];
         foreach ($attributes as $key => $value) {
@@ -38,7 +38,7 @@ class HtmlHelper
      * @param  string  $value
      * @return string
      */
-    static protected function attributeElement($key, $value)
+    protected function attributeElement($key, $value)
     {
         if (is_numeric($key)) $key = $value;
 
@@ -47,5 +47,93 @@ class HtmlHelper
         return ( ! is_null($value))
             ?  $key.'="'.htmlentities($value, ENT_QUOTES, 'UTF-8', false).'"'
             : null;
+    }
+
+    public function getIdAttribute($options)
+    {
+        if (array_key_exists('id', $options)) {
+            return $options['id'];
+        }
+        return rtrim(str_replace( '--' , '-', str_replace(['[', ']'], '-', $options['name'])), '-').'-id';
+    }
+
+    /**
+     * @param $options
+     * @return bool
+     */
+    public function isDanger($options)
+    {
+        return !empty($options['danger']) && $options['danger'] === true;
+    }
+
+    /**
+     * @param $options
+     * @return bool
+     */
+    public function isRequired($options)
+    {
+        return !empty($options['required']) && $options['required'] === true;
+    }
+
+
+    /**
+     * @param array $options
+     * @return mixed
+     */
+    public function getElementAttributes(array $options)
+    {
+        $ignoreAttributes = [
+            'grid', 'form-group-class', 'label', 'before-input', 'after-input', 'mask', 'reverse-mask', 'init', 'url',
+            'help', 'help-title', 'help-placement', 'danger'
+        ];
+        $newOptions = array_filter($options, function($key) use ($ignoreAttributes){
+            return !in_array($key, $ignoreAttributes);
+        }, ARRAY_FILTER_USE_KEY);
+        return $this->attributes($newOptions);
+    }
+
+    /**
+     * @param $options
+     * @return string
+     */
+    public function getDivError($options)
+    {
+        if (empty($options['name'])) return '';
+        return '<div class="error-message" id="'.$options['name'].'-input-message"></div>';
+    }
+
+    /**
+     * @param array $options
+     * @param $html
+     * @return string
+     */
+    public function getFormGroup(array $options, $html)
+    {
+        if (empty($options['name'])) return $html;
+        $formClass = !empty($options['form-group-class']) ? $options['form-group-class'] : 'form-group';
+        $formClass.= (!empty($options['required']) && $options['required'] === true ) ? ' required' : '';
+        return '<div id="'.$options['name'].'-form-group" class="'.$formClass.'" >'.$html.'</div>';
+    }
+
+    /**
+     * @param array $options
+     * @param $html
+     * @return string
+     */
+    public function getGrid(array $options, $html)
+    {
+        if(empty($options['grid']) || empty($options['name'])) return $html;
+        return '<div id="'.$options['name'].'-grid" class="'.$options['grid'].'" >'.$html.'</div>';
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    public function getMaskScript(array $options)
+    {
+        if (empty($options['id']) || empty($options['mask'])) return '';
+        $reverse = isset($options['mask-reverse']) && $options['mask-reverse'] === true ?  'true' : 'false';
+        return 'jQuery("#'.$options['id'].'").mask("'. $options['mask'].'", { reverse: '. $reverse .' });';
     }
 }

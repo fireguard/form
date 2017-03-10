@@ -46,6 +46,11 @@ abstract class AbstractElement implements FormElementInterface
     protected $scripts = '';
 
     /**
+     * @var HtmlHelper
+     */
+    protected $html;
+
+    /**
      * AbstractElement constructor.
      * @param $name
      * @param array $options
@@ -54,6 +59,7 @@ abstract class AbstractElement implements FormElementInterface
     {
         $this->name = $name;
         $this->options = $options;
+        $this->html = new HtmlHelper();
     }
 
     /**
@@ -117,48 +123,12 @@ abstract class AbstractElement implements FormElementInterface
     {
         $options = $this->options;
         if (empty($options['name'])) $options['name'] = $this->getName();
-        $options['id'] = $this->getIdAttribute($options);
+        $options['id'] = $this->html->getIdAttribute($options);
         $options['value'] = $this->getValue();
         if ($this instanceof FormInputInterface) {
             $options['type'] = $this->getType();
         }
         return $options;
-    }
-
-    protected function getIdAttribute($options)
-    {
-        if (array_key_exists('id', $options)) {
-            return $options['id'];
-        }
-        return rtrim(str_replace( '--' , '-', str_replace(['[', ']'], '-', $options['name'])), '-').'-id';
-    }
-
-    protected function getElementAttributes(array $options)
-    {
-        $ignoreAttributes = [
-            'grid', 'form-group-class', 'label', 'before-input', 'after-input', 'mask', 'reverse-mask', 'init', 'url',
-            'help', 'help-title', 'help-placement', 'danger'
-        ];
-        $newOptions = array_filter($options, function($key) use ($ignoreAttributes){
-            return !in_array($key, $ignoreAttributes);
-        }, ARRAY_FILTER_USE_KEY);
-        return HtmlHelper::attributes($newOptions);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isDanger()
-    {
-        return !empty($this->options['danger']) && $this->options['danger'];
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isRequired()
-    {
-        return !empty($this->options['required']) && $this->options['required'];
     }
 
     /**
@@ -170,8 +140,8 @@ abstract class AbstractElement implements FormElementInterface
     {
         $options = $this->getFormattedOptions();
         $options['class'] = "form-control ".((isset($options['class'])) ? $options['class'] : '');
-        $options['class'] .= $this->isDanger() ? ' input-danger' : '';
-        $options['attrs'] = $this->getElementAttributes($options);
+        $options['class'] .= $this->html->isDanger($options) ? ' input-danger' : '';
+        $options['attrs'] = $this->html->getElementAttributes($options);
         $html = '<input'.$options['attrs']. '>';
         if (!isset($options['type']) || $options['type'] != 'hidden') $html = $this->makeElement($options, $html);
         return $html;
@@ -188,21 +158,16 @@ abstract class AbstractElement implements FormElementInterface
         if (!empty($options['before-input'])) $html =  $options['before-input'].$html;
         $html = $this->getLabel($options).$html;
         if (!empty($options['after-input']))  $html .=  $options['after-input'];
-        $html .= $this->getDivError($options);
-        $html = $this->getFormGroup($options, $html);
+        $html .= $this->html->getDivError($options);
+        $html = $this->html->getFormGroup($options, $html);
 
         if (!empty($options['script'])) $this->appendScript($options['script']);
-        if (!empty($options['mask'])) $this->appendScript($this->getMaskScript($options));
+        if (!empty($options['mask'])) $this->appendScript($this->html->getMaskScript($options));
 
-        return $this->getGrid($options, $html);
+        return $this->html->getGrid($options, $html);
     }
 
 
-    protected function getDivError($options)
-    {
-        if (empty($options['name'])) return '';
-        return '<div class="error-message" id="'.$options['name'].'-input-message"></div>';
-    }
 
     protected function getLabel(array $options)
     {
@@ -218,25 +183,6 @@ abstract class AbstractElement implements FormElementInterface
             ->setValue($options['label'])->render();
     }
 
-    protected function getMaskScript(array $options)
-    {
-        if (empty($options['id']) && empty($options['mask'])) return '';
-        return 'jQuery("#'.$options['id'].'").mask("'. $options['mask'].'", { reverse: '.(isset($options['reverse-mask']) ? ($options['reverse-mask'] ? 'true' : 'false') : 'true').' });';
-    }
-
-    protected function getFormGroup(array $options, $html)
-    {
-        if (empty($options['name'])) return $html;
-        $formClass = !empty($options['form-group-class']) ? $options['form-group-class'] : 'form-group';
-        $formClass.= (!empty($options['required']) && $options['required'] === true ) ? ' required' : '';
-        return '<div id="'.$options['name'].'-form-group" class="'.$formClass.'" >'.$html.'</div>';
-    }
-
-    protected function getGrid(array $options, $html)
-    {
-        if(empty($options['grid']) || empty($options['name'])) return $html;
-        return '<div id="'.$options['name'].'-grid" class="'.$options['grid'].'" >'.$html.'</div>';
-    }
 
     /**
      * @return string

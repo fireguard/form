@@ -21,7 +21,7 @@ class LabelElement extends AbstractElement implements FormElementInterface
         $value = $this->getHelp($this->options, $value);
         $options = $this->getClearOptions();
 
-        return '<label for="' .$this->getName(). '"' .$this->getElementAttributes($options). '>' . $value . '</label>';
+        return '<label for="' .$this->getName(). '"' .$this->html->getElementAttributes($options). '>' . $value . '</label>';
     }
 
     /**

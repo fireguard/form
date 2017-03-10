@@ -30,8 +30,8 @@ class DateElement extends AbstractElement implements FormElementInterface, FormI
         $this->setValue($this->getFormattedValue());
 
         $this->options['before-input'] = '<div class="input-group">';
-        $dangerClass = ($this->isDanger() ? 'input-danger-addon' : '');
-        $requiredClass = ($this->isRequired() ? 'input-required-addon' : '');
+        $dangerClass = ($this->html->isDanger($this->options) ? 'input-danger-addon' : '');
+        $requiredClass = ($this->html->isRequired($this->options) ? 'input-required-addon' : '');
         $this->options['after-input']  = '<span class="input-group-addon '. $dangerClass. $requiredClass .' "><i class="fa fa-calendar"></i></span></div>';
         $this->options['class'] = 'datepicker';
         return $this->makeInput();

@@ -23,8 +23,8 @@ class EmailElement extends AbstractElement implements FormElementInterface, Form
 
     public function render()
     {
-        $dangerClass = ($this->isDanger() ? 'input-danger-addon' : '');
-        $requiredClass = ($this->isRequired() ? 'input-required-addon' : '');
+        $dangerClass = ($this->html->isDanger($this->options) ? 'input-danger-addon' : '');
+        $requiredClass = ($this->html->isRequired($this->options) ? 'input-required-addon' : '');
         $this->options['before-input'] = '<div class="input-group">';
         $this->options['after-input']  = '<span class="input-group-addon '. $dangerClass . $requiredClass .' "><i class="fa fa-envelope-o"></i></span></div>';
 
