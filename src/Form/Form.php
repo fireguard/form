@@ -12,6 +12,7 @@
 namespace Fireguard\Form;
 
 use Fireguard\Form\Contracts\FormModelInterface;
+use Fireguard\Form\Elements\GroupElement;
 use Fireguard\Form\Elements\HiddenElement;
 use Fireguard\Form\Exceptions\InvalidElementTypeException;
 use Fireguard\Form\Helpers\HtmlHelper;
@@ -95,6 +96,25 @@ class Form
             $element->setValue($this->extractValueForModel($field, $defaultValue));
         }
         $this->elements[] = $element;
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param array $elements
+     * @param array $options
+     * @return Form
+     */
+    public function addGroup($name, array $elements, array $options = [])
+    {
+        $group = new GroupElement($name, $options);
+
+        foreach ($elements as $element) {
+            $value = $this->extractValueForModel($element[0], isset($element[3]) ? $element[3] : '');
+            $options = isset($element[2]) ? $element[2] : [];
+            $group->addElement( $element[0], $element[1], $options, $value);
+        }
+        $this->elements[] = $group;
         return $this;
     }
 
@@ -184,22 +204,16 @@ class Form
     }
 
     /**
-     * @param bool $withScripts
      * @return string
      */
-    public function render($withScripts = false)
+    public function render()
     {
-        $html = $this->getFormOpenTag();
-        $html .= $this->getSpoofedMethod();
-        $html .= $this->getInputToken();
-        $this->scripts = '';
-        foreach ($this->elements as $element) {
-            $html .= $element->render();
-            $this->scripts .= $element->getScripts();
-        }
-        if($withScripts) $html .= $this->renderScripts();
-        $html .= '</form>';
-        return $html;
+        return $this->processRender(false);
+    }
+
+    public function renderWithScripts()
+    {
+        return $this->processRender(true);
     }
 
     public function renderScripts()
@@ -210,5 +224,23 @@ class Form
         }
         $scripts = '<script>var fn = function() { jQuery(".btn-help").popover(); '.$scripts.'}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script>';
         return $scripts;
+    }
+
+    /**
+     * @param bool $withScripts
+     * @return string
+     */
+    protected function processRender($withScripts = false)
+    {
+        $html = $this->getFormOpenTag();
+        $html .= $this->getSpoofedMethod();
+        $html .= $this->getInputToken();
+        $this->scripts = '';
+        foreach ($this->elements as $element) {
+            $html .= $element->render();
+        }
+        if($withScripts) $html .= $this->renderScripts();
+        $html .= '</form>';
+        return $html;
     }
 }

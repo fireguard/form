@@ -59,6 +59,7 @@ abstract class AbstractElement implements FormElementInterface
     {
         $this->name = $name;
         $this->options = $options;
+        $this->options['name'] = $name;
         $this->html = new HtmlHelper();
     }
 

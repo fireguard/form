@@ -14,7 +14,9 @@ namespace Fireguard\Form\Elements;
 
 class AbstractElementTest extends \PHPUnit_Framework_TestCase
 {
-
+    /**
+     * @var AbstractElement
+     */
     protected $element;
 
     public function setUp()

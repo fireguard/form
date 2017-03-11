@@ -11,12 +11,7 @@
 
 namespace Fireguard\Form\Contracts;
 
-
-interface FormModelInterface
+interface FormCheckableInterface
 {
-    /**
-     * @param string $field
-     * @return mixed
-     */
-    public function getElementValue($field);
+
 }
