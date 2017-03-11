@@ -26,9 +26,9 @@ class AbstractElementTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetOptions()
     {
-        $this->assertEquals([], $this->element->getOptions());
+        $this->assertEquals(['name' => 'name-for-element'], $this->element->getOptions());
 
-        $exampleOptions = ['class' => 'name-for-class', 'label' => 'ExampleLabel'];
+        $exampleOptions = ['name' => 'name-for-element', 'class' => 'name-for-class', 'label' => 'ExampleLabel'];
         $this->element->setOptions($exampleOptions);
         $this->assertEquals($exampleOptions, $this->element->getOptions());
 

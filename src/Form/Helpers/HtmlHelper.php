@@ -84,7 +84,7 @@ class HtmlHelper
     {
         $ignoreAttributes = [
             'grid', 'form-group-class', 'label', 'before-input', 'after-input', 'mask', 'reverse-mask', 'init', 'url',
-            'help', 'help-title', 'help-placement', 'danger'
+            'help', 'help-title', 'help-placement', 'danger', 'label', 'inline'
         ];
         $newOptions = array_filter($options, function($key) use ($ignoreAttributes){
             return !in_array($key, $ignoreAttributes);

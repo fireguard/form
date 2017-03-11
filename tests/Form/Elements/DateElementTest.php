@@ -25,13 +25,13 @@ class DateElementTest extends \PHPUnit_Framework_TestCase
     public function testRender()
     {
         $this->assertEquals(
-            '<div id="name-for-input-text-form-group" class="form-group" ><div class="input-group"><input class="form-control datepicker" name="name-for-input-text" id="name-for-input-text-id" value="" type="text"><span class="input-group-addon  "><i class="fa fa-calendar"></i></span></div><div class="error-message" id="name-for-input-text-input-message"></div></div>',
+            '<div id="name-for-input-text-form-group" class="form-group" ><div class="input-group"><input name="name-for-input-text" class="form-control datepicker" id="name-for-input-text-id" value="" type="text"><span class="input-group-addon  "><i class="fa fa-calendar"></i></span></div><div class="error-message" id="name-for-input-text-input-message"></div></div>',
             $this->element->render()
         );
 
         $elementDanger = (new DateElement('date-danger', ['danger' => true]))->setValue('2015-01-01');
         $this->assertEquals(
-            '<div id="date-danger-form-group" class="form-group" ><div class="input-group"><input class="form-control datepicker input-danger" name="date-danger" id="date-danger-id" value="01/01/2015" type="text"><span class="input-group-addon input-danger-addon "><i class="fa fa-calendar"></i></span></div><div class="error-message" id="date-danger-input-message"></div></div>',
+            '<div id="date-danger-form-group" class="form-group" ><div class="input-group"><input name="date-danger" class="form-control datepicker input-danger" id="date-danger-id" value="01/01/2015" type="text"><span class="input-group-addon input-danger-addon "><i class="fa fa-calendar"></i></span></div><div class="error-message" id="date-danger-input-message"></div></div>',
             $elementDanger->render()
         );
 

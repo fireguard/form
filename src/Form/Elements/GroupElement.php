@@ -23,11 +23,13 @@ class GroupElement extends AbstractElement implements FormGroupElementInterface
 
     public function render()
     {
-        $html = '<fieldset  class="control-inline">';
+        $class = !empty($this->options['class']) ? $this->options['class'] : '';
+        $html = '<fieldset class="form-group-control '.$class.'">';
+        $html .= $this->getLegendForGroup($this->options);
         foreach ($this->elements as $element) {
             $html .= $element->render();
         }
-        $html .= '</fieldset >';
+        $html .= '</fieldset>';
 
         return $this->html->getGrid($this->options, $html);
     }
@@ -37,11 +39,19 @@ class GroupElement extends AbstractElement implements FormGroupElementInterface
      */
     public function getScripts()
     {
-        $scripts = '';
+        $scripts = parent::getScripts();
         foreach ($this->elements as $element) {
             $scripts .= $element->getScripts();
         }
         return $scripts;
+    }
+
+    /**
+     * @return array
+     */
+    public function getElements()
+    {
+        return $this->elements;
     }
 
     public function addElement($field, $elementClass, array $options = [], $value = '')
@@ -56,5 +66,11 @@ class GroupElement extends AbstractElement implements FormGroupElementInterface
         }
         $this->elements[] = $element;
         return $this;
+    }
+
+    protected function getLegendForGroup(array $options)
+    {
+        if(empty($options['label'])) return '';
+        return '<legend>'.$options['label'].'</legend>';
     }
 }

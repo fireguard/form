@@ -14,7 +14,7 @@ namespace Fireguard\Form\Elements;
 use Fireguard\Form\Contracts\FormCheckableInterface;
 use Fireguard\Form\Contracts\FormElementInterface;
 
-class CheckBoxElement extends CheckableElement implements FormElementInterface, FormCheckableInterface
+class CheckBoxElement extends AbstractElement implements FormElementInterface, FormCheckableInterface
 {
     public function getType()
     {
@@ -23,6 +23,45 @@ class CheckBoxElement extends CheckableElement implements FormElementInterface, 
 
     public function render()
     {
-        return $this->checkable();
+        $options = $this->getFormattedOptions();
+        $options['class'] = "form-control ".((isset($options['class'])) ? $options['class'] : '');
+        $options['class'] .= $this->html->isDanger($options) ? ' input-danger' : '';
+        if ($this->isChecked()) $options['checked'] = 'checked';
+        $options['type'] = $this->getType();
+        $options['attrs'] = $this->html->getElementAttributes($options);
+        $html = '<input type="hidden" name="'.$options['name'].'" value="off" > <input '.$options['attrs']. '>';
+        return $this->makeCheckable($options, $html);
+    }
+
+    /**
+     * @param array $options
+     * @param string $html
+     * @return string
+     */
+    public function makeCheckable(array $options, $html)
+    {
+        if (!empty($options['before-input'])) $html =  $options['before-input'].$html;
+        if (!empty($options['after-input']))  $html .=  $options['after-input'];
+        $html .= '<span>'.(!empty($options['label']) ? $options['label'] : '' ).'</span>';
+        if(!empty($options['script'])) $this->appendScript($options['script']);
+        $html = '<label class="'.$this->getClassForLabel($options).' fancy-checkbox custom-bgcolor-primary ">'.$html.'</label>';
+        if(!empty($options['grid'])) $html = '<div id="'.$options['name'].'-grid" class="'.$options['grid'].'" >'.$html.'</div>';
+        return $html;
+
+    }
+
+    protected function getClassForLabel($options)
+    {
+        return (!empty($options['inline']) && $options['inline'] === true) ? 'control-inline checkbox-inline' : '';
+    }
+
+    /**
+     * Get the check state for a checkable input.
+     *
+     * @return bool
+     */
+    protected function isChecked()
+    {
+        return $this->getValue() === true;
     }
 }
