@@ -147,6 +147,7 @@ class Form
             'method' => $this->getMethod(),
             'action' => $this->getAction(),
             'accept-charset' => 'UTF-8',
+            'class' => 'fireguard-form'
         ];
 
         if (isset($this->options['files']) && $this->options['files']) {
