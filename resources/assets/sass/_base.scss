@@ -1,0 +1,57 @@
+.fireguard-form {
+
+  :required {
+    border: 1px solid $primary-color;
+  }
+
+  textarea {
+    max-width: 100%;
+  }
+
+  .input-required-addon{
+    color: #FFF;
+    background: $primary-color;
+    border-color: $primary-color;
+  }
+
+  .input-danger {
+    border-color: $brand-danger;
+  }
+
+  .input-danger-addon {
+    color: #FFF;
+    background: $brand-danger;
+    border-color: $brand-danger;
+  }
+
+  .btn.btn-primary {
+    color: #fff;
+    background-color: $primary-color;
+    border-color: #00192d;
+  }
+
+  fieldset {
+    legend {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+  }
+
+  .top-space legend {
+    padding-top: 10px;
+  }
+
+  .form-group-control .btn+.btn {
+    margin-left: 5px;
+    margin-bottom: 0;
+  }
+
+  .form-group-control.footer {
+    text-align: right;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+  }
+}

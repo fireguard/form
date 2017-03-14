@@ -1,0 +1,94 @@
+.fireguard-form {
+  .fancy-checkbox {
+    display: block;
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input[type="checkbox"] + span {
+      display: inline-block;
+      vertical-align: middle;
+      *vertical-align: auto;
+      *zoom: 1;
+      *display: inline;
+      cursor: pointer;
+      position: relative;
+      font-size: 13px;
+    }
+
+    input[type="checkbox"] + span:before {
+      display: inline-block;
+      vertical-align: middle;
+      *vertical-align: auto;
+      *zoom: 1;
+      *display: inline;
+      position: relative;
+      bottom: 1px;
+      width: 18px;
+      height: 18px;
+      margin-right: 5px;
+      content: "";
+      border: 1px solid #ccc;
+    }
+
+    input[type="checkbox"]:checked + span:before {
+      font-family: FontAwesome;
+      content: '\f00c';
+      font-size: 12px;
+      color: #99a1a7;
+      text-align: center;
+      line-height: 16px;
+      background: #ededed;
+      border: 1px solid #ccc;
+    }
+  }
+
+  .fancy-checkbox.checkbox-inline{
+    padding-left: 0;
+    padding-right: 20px;
+    display: inline;
+  }
+
+  .fancy-checkbox.custom-color-green {
+    input[type="checkbox"]:checked + span:before {
+      color: $brand-success;
+      background-color: #fff;
+    }
+  }
+
+  .fancy-checkbox.custom-bgcolor-green {
+    input[type="checkbox"]:checked + span:before {
+      color: #fff;
+      background-color: $brand-success;
+      border-color: #32cf4d;
+    }
+  }
+
+  .fancy-checkbox.custom-color-primary {
+    input[type="checkbox"]:checked + span:before {
+      color: $primary-color;
+      background-color: #fff;
+    }
+  }
+
+  .fancy-checkbox.custom-bgcolor-primary {
+    input[type="checkbox"]:checked + span:before {
+      color: #fff;
+      background-color: $primary-color;
+      border-color: #00192d;
+    }
+  }
+
+  .input-group-addon {
+    .fancy-checkbox {
+      margin: 0;
+      input[type="checkbox"] + span {
+        margin: 0;
+      }
+      input[type="checkbox"] + span:before {
+        margin: 0;
+      }
+    }
+  }
+}
