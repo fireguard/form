@@ -13,14 +13,6 @@ namespace Fireguard\Form\Contracts;
 
 interface FormGroupElementInterface extends FormElementInterface
 {
-    /**
-     * @param $field
-     * @param $elementClass
-     * @param array $options
-     * @param string $value
-     * @return FormElementInterface
-     */
-    public function addElement($field, $elementClass, array $options = [], $value = '');
 
     /**
      * @return string

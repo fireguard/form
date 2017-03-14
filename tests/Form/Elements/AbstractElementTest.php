@@ -86,7 +86,7 @@ class AbstractElementTest extends \PHPUnit_Framework_TestCase
         $this->element->setOptions(['id' => 'test-for-id']);
 
         $this->assertEquals(
-            '<div id="name-for-element-form-group" class="form-group" ><input id="test-for-id" name="name-for-element" value="" class="form-control "><div class="error-message" id="name-for-element-input-message"></div></div>',
+            '<div id="name-for-element-form-group" class="form-group" ><input id="test-for-id" name="name-for-element"><div class="error-message" id="name-for-element-input-message"></div></div>',
             $this->element->makeInput()
         );
 
@@ -98,7 +98,7 @@ class AbstractElementTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertEquals(
-            '<div id="name-for-element-grid" class="col-xs-12" ><div id="name-for-element-form-group" class="form-group" ><label for="test-for-complete-options">Test</label><input id="test-for-complete-options" name="name-for-element" value="" class="form-control "><div class="error-message" id="name-for-element-input-message"></div></div></div>',
+            '<div id="name-for-element-grid" class="col-xs-12" ><div id="name-for-element-form-group" class="form-group" ><label for="test-for-complete-options">Test</label><input id="test-for-complete-options" name="name-for-element"><div class="error-message" id="name-for-element-input-message"></div></div></div>',
             $this->element->makeInput()
         );
     }

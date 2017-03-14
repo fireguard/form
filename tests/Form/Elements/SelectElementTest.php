@@ -26,7 +26,7 @@ class SelectElementTest extends \PHPUnit_Framework_TestCase
     {
         $element = new SelectElement('name-for-select');
         $this->assertEquals(
-            '<div id="name-for-select-form-group" class="form-group" ><select  name="name-for-select" id="name-for-select-id"><option value="" selected="selected"></option></select><div class="error-message" id="name-for-select-input-message"></div></div>',
+            '<div id="name-for-select-form-group" class="form-group" ><select  name="name-for-select" id="name-for-select-id" class="form-control "><option value="" selected="selected"></option></select><div class="error-message" id="name-for-select-input-message"></div></div>',
             $element->render()
         );
         $this->assertEquals(
@@ -40,7 +40,7 @@ class SelectElementTest extends \PHPUnit_Framework_TestCase
             'options' => [1 => 'Option 1', 2 => 'Option 2', 3 => 'Option 3']
         ]);
         $this->assertEquals(
-            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select</label><select  name="name-for-select" id="name-for-select-id"><option value="1" >Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option><option value="" selected="selected"></option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
+            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select</label><select  name="name-for-select" id="name-for-select-id" class="form-control "><option value="1" >Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option><option value="" selected="selected"></option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
             $element->render()
         );
     }
@@ -55,7 +55,7 @@ class SelectElementTest extends \PHPUnit_Framework_TestCase
             'multiple' => true
         ]);
         $this->assertEquals(
-            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select Multiple</label><select  multiple name="name-for-select" id="name-for-select-id"><option value="1" >Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
+            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select Multiple</label><select  multiple name="name-for-select" id="name-for-select-id" class="form-control  input-danger"><option value="1" >Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
             $element->render()
         );
         $this->assertEquals(

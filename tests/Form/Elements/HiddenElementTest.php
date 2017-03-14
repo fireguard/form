@@ -25,7 +25,7 @@ class HiddenElementTest extends \PHPUnit_Framework_TestCase
     public function testRender()
     {
         $this->assertEquals(
-            '<input name="name-for-input-text" id="name-for-input-text-id" value="" type="hidden" class="form-control ">',
+            '<input name="name-for-input-text" id="name-for-input-text-id" type="hidden">',
             $this->element->render()
         );
     }

@@ -126,10 +126,9 @@ abstract class AbstractElement implements FormElementInterface
         if (empty($options['name'])) $options['name'] = $this->getName();
         $options['id'] = $this->html->getIdAttribute($options);
         $options['value'] = $this->getValue();
-        if ($this instanceof FormInputInterface) {
-            $options['type'] = $this->getType();
-        }
-        return $options;
+        if ($this instanceof FormInputInterface) $options['type'] = $this->getType();
+        $options['class'] = $this->getOptionClass($options);
+        return $this->clearEmptyOptions($options);
     }
 
     /**
@@ -140,12 +139,20 @@ abstract class AbstractElement implements FormElementInterface
     public function makeInput()
     {
         $options = $this->getFormattedOptions();
-        $options['class'] = "form-control ".((isset($options['class'])) ? $options['class'] : '');
-        $options['class'] .= $this->html->isDanger($options) ? ' input-danger' : '';
-        $options['attrs'] = $this->html->getElementAttributes($options);
-        $html = '<input'.$options['attrs']. '>';
-        if (!isset($options['type']) || $options['type'] != 'hidden') $html = $this->makeElement($options, $html);
+        $html = '<input'.$this->html->getElementAttributes($options). '>';
+        $html = $this->makeElement($options, $html);
         return $html;
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    protected function getOptionClass(array $options)
+    {
+        $class = ((isset($options['class'])) ? $options['class'] : '');
+        if ($this instanceof FormInputInterface && $this->getType() != 'hidden') $class = "form-control ".$class;
+        return $class . ($this->html->isDanger($options) ? ' input-danger' : '');
     }
 
     /**
@@ -156,6 +163,8 @@ abstract class AbstractElement implements FormElementInterface
      */
     protected function makeElement(array $options, $html)
     {
+        if (isset($options['type']) && $options['type'] == 'hidden') return $html;
+
         if (!empty($options['before-input'])) $html =  $options['before-input'].$html;
         $html = $this->getLabel($options).$html;
         if (!empty($options['after-input']))  $html .=  $options['after-input'];
@@ -168,8 +177,10 @@ abstract class AbstractElement implements FormElementInterface
         return $this->html->getGrid($options, $html);
     }
 
-
-
+    /**
+     * @param array $options
+     * @return string
+     */
     protected function getLabel(array $options)
     {
         if (empty($options['id']) || empty($options['label'])) return '';
@@ -182,6 +193,18 @@ abstract class AbstractElement implements FormElementInterface
                 'help-placement' => isset($options['help-placement']) ? $options['help-placement'] : null ,
             ])
             ->setValue($options['label'])->render();
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function clearEmptyOptions(array $options)
+    {
+        foreach ($options as $key => $value) {
+            if (empty($value)) unset($options[$key]);
+        }
+        return $options;
     }
 
 

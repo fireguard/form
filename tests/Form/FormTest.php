@@ -83,14 +83,14 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form(null, ['method' => 'DELETE']);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><input name="_method" id="_method-id" value="DELETE" type="hidden" class="form-control "></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><input name="_method" id="_method-id" value="DELETE" type="hidden"></form>',
             $form->render()
         );
 
         $form = new Form();
         $form->addElement('name', TextElement::class);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" value="" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
             $form->render()
         );
 
@@ -114,7 +114,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form = (new Form())->setElements([$element]);
 
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" value="" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>var fn = function() { jQuery(".btn-help").popover(); jQuery("#test").val();}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>var fn = function() { jQuery(".btn-help").popover(); jQuery("#test").val();}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script></form>',
             $form->renderWithScripts()
         );
     }
@@ -136,7 +136,16 @@ class FormTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetElementByName()
+    {
+        $element1 = new TextElement('input-1');
+        $element2 = new TextElement('input-2');
+        $form = (new Form())->setElements([$element1, $element2]);
 
+        $this->assertEquals($element1, $form->getElementByName('input-1'));
+
+        $this->assertEquals(null, $form->getElementByName('invalid-name'));
+    }
 
 
 }

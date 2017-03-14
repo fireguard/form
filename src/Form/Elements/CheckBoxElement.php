@@ -24,12 +24,9 @@ class CheckBoxElement extends AbstractElement implements FormElementInterface, F
     public function render()
     {
         $options = $this->getFormattedOptions();
-        $options['class'] = "form-control ".((isset($options['class'])) ? $options['class'] : '');
-        $options['class'] .= $this->html->isDanger($options) ? ' input-danger' : '';
         if ($this->isChecked()) $options['checked'] = 'checked';
         $options['type'] = $this->getType();
-        $options['attrs'] = $this->html->getElementAttributes($options);
-        $html = '<input type="hidden" name="'.$options['name'].'" value="off" > <input '.$options['attrs']. '>';
+        $html = '<input type="hidden" name="'.$options['name'].'" value="off" > <input '.$this->html->getElementAttributes($options). '>';
         return $this->makeCheckable($options, $html);
     }
 

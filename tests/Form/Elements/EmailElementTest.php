@@ -25,7 +25,7 @@ class EmailElementTest extends \PHPUnit_Framework_TestCase
     public function testRender()
     {
         $this->assertEquals(
-            '<div id="name-for-input-text-form-group" class="form-group" ><div class="input-group"><input name="name-for-input-text" id="name-for-input-text-id" value="" type="email" class="form-control "><span class="input-group-addon  "><i class="fa fa-envelope-o"></i></span></div><div class="error-message" id="name-for-input-text-input-message"></div></div>',
+            '<div id="name-for-input-text-form-group" class="form-group" ><div class="input-group"><input name="name-for-input-text" id="name-for-input-text-id" type="email" class="form-control "><span class="input-group-addon  "><i class="fa fa-envelope-o"></i></span></div><div class="error-message" id="name-for-input-text-input-message"></div></div>',
             $this->element->render()
         );
     }

@@ -54,16 +54,12 @@ class GroupElement extends AbstractElement implements FormGroupElementInterface
         return $this->elements;
     }
 
-    public function addElement($field, $elementClass, array $options = [], $value = '')
+    /**
+     * @param FormElementInterface $element
+     * @return $this
+     */
+    public function appendElement(FormElementInterface $element)
     {
-        if (!class_exists($elementClass) ) {
-            throw new InvalidElementTypeException('Class not found');
-        }
-
-        $element = (new $elementClass($field))->setOptions($options);
-        if (!in_array($element->getType(), $this->skipValueTypes )){
-            $element->setValue($value);
-        }
         $this->elements[] = $element;
         return $this;
     }

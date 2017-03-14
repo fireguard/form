@@ -12,6 +12,8 @@
 namespace Fireguard\Form\Elements;
 
 
+use Fireguard\Form\Form;
+
 class GroupElementTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -23,6 +25,7 @@ class GroupElementTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->element = new GroupElement('name-for-input-text');
+
     }
 
     public function testRender()
@@ -38,11 +41,32 @@ class GroupElementTest extends \PHPUnit_Framework_TestCase
             '<fieldset class="form-group-control "><legend>Name for Group</legend></fieldset>',
             $element->render()
         );
+    }
 
-        $element->addElement('checkbox1', CheckBoxElement::class, ['lable' => 'Checkbox1', 'inline' => true], true);
-        $element->addElement('checkbox2', CheckBoxElement::class, ['lable' => 'Checkbox2', 'inline' => true], false);
+    public function testGetElements()
+    {
+        $form = new Form();
+        $form->addGroup('test-elements', [
+            ['checkbox1', CheckBoxElement::class, ['lable' => 'Checkbox1', 'inline' => true], true],
+            ['checkbox2', CheckBoxElement::class, ['lable' => 'Checkbox2', 'inline' => true], false]
+        ], ['label' => 'Name for Group']);
+        $element = $form->getElementByName('test-elements');
+
+        $elements = $element->getElements();
+        $this->assertCount(2, $elements);
+    }
+
+    public function testElementsRender()
+    {
+
+        $form = new Form();
+        $form->addGroup('test-elements', [
+            ['checkbox1', CheckBoxElement::class, ['lable' => 'Checkbox1', 'inline' => true], true],
+            ['checkbox2', CheckBoxElement::class, ['lable' => 'Checkbox2', 'inline' => true], false]
+        ], ['label' => 'Name for Group']);
+        $element = $form->getElementByName('test-elements');
         $this->assertEquals(
-            '<fieldset class="form-group-control "><legend>Name for Group</legend><label class="control-inline checkbox-inline fancy-checkbox custom-bgcolor-primary "><input type="hidden" name="checkbox1" value="off" > <input  lable="Checkbox1" name="checkbox1" id="checkbox1-id" value class="form-control " checked="checked" type="checkbox"><span></span></label><label class="control-inline checkbox-inline fancy-checkbox custom-bgcolor-primary "><input type="hidden" name="checkbox2" value="off" > <input  lable="Checkbox2" name="checkbox2" id="checkbox2-id" class="form-control " type="checkbox"><span></span></label></fieldset>',
+            '<fieldset class="form-group-control "><legend>Name for Group</legend><label class="control-inline checkbox-inline fancy-checkbox custom-bgcolor-primary "><input type="hidden" name="checkbox1" value="off" > <input  lable="Checkbox1" name="checkbox1" id="checkbox1-id" value checked="checked" type="checkbox"><span></span></label><label class="control-inline checkbox-inline fancy-checkbox custom-bgcolor-primary "><input type="hidden" name="checkbox2" value="off" > <input  lable="Checkbox2" name="checkbox2" id="checkbox2-id" type="checkbox"><span></span></label></fieldset>',
             $element->render()
         );
     }
@@ -53,25 +77,11 @@ class GroupElementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $element->getScripts());
 
         $element->setScripts('$( document ).ready(function() { console.log( "ready!" ); });');
-        $element->addElement('checkbox1', CheckBoxElement::class, ['lable' => 'Checkbox1', 'inline' => true], true);
+        $element->appendElement(new CheckBoxElement('checkbox'));
         $this->assertEquals(
             '$( document ).ready(function() { console.log( "ready!" ); });',
             $element->getScripts()
         );
     }
 
-    public function testAddElement()
-    {
-        $oldCountElements = count($this->element->getElements());
-        $this->element->addElement('name', TextElement::class, []);
-        $this->assertCount($oldCountElements+1, $this->element->getElements());
-    }
-
-    /**
-     * @expectedException \Fireguard\Form\Exceptions\InvalidElementTypeException
-     */
-    public function testAddElementException()
-    {
-        $this->element->addElement('name', 'ClassNotExists', []);
-    }
 }

@@ -11,6 +11,7 @@
 
 namespace Fireguard\Form;
 
+use Fireguard\Form\Contracts\FormElementInterface;
 use Fireguard\Form\Contracts\FormModelInterface;
 use Fireguard\Form\Elements\GroupElement;
 use Fireguard\Form\Elements\HiddenElement;
@@ -64,7 +65,7 @@ class Form
      *
      * @var array
      */
-    protected $skipValueTypes = ['file', 'password', 'checkbox', 'radio'];
+    protected $skipValueTypes = ['file', 'password'];
 
     /**
      * FormBuilder constructor.
@@ -83,9 +84,22 @@ class Form
      * @param array $options
      * @param string $defaultValue
      * @return Form
-     * @throws \Exception
      */
     public function addElement($field, $elementClass, array $options = [], $defaultValue = '')
+    {
+        $this->elements[] = $this->createElement($field, $elementClass, $options, $defaultValue);
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param $elementClass
+     * @param array $options
+     * @param string $defaultValue
+     * @return FormElementInterface
+     * @throws InvalidElementTypeException
+     */
+    protected function createElement($field, $elementClass, array $options = [], $defaultValue = '')
     {
         if (!class_exists($elementClass) ) {
             throw new InvalidElementTypeException('Class not found');
@@ -95,8 +109,15 @@ class Form
         if (!in_array($element->getType(), $this->skipValueTypes )){
             $element->setValue($this->extractValueForModel($field, $defaultValue));
         }
-        $this->elements[] = $element;
-        return $this;
+        return $element;
+    }
+
+    public function getElementByName($name)
+    {
+        foreach ($this->elements as $element) {
+            if ($element->getName() === $name) return $element;
+        }
+        return null;
     }
 
     /**
@@ -112,7 +133,8 @@ class Form
         foreach ($elements as $element) {
             $value = $this->extractValueForModel($element[0], isset($element[3]) ? $element[3] : '');
             $options = isset($element[2]) ? $element[2] : [];
-            $group->addElement( $element[0], $element[1], $options, $value);
+            $element = $this->createElement($element[0], $element[1], $options, $value);
+            $group->appendElement( $element );
         }
         $this->elements[] = $group;
         return $this;
