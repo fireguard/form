@@ -7,3 +7,11 @@
 [![License](https://poser.pugx.org/fireguard/form/license)](https://packagist.org/packages/fireguard/form)
 [![Code Climate](https://codeclimate.com/github/fireguard/form/badges/gpa.svg)](https://codeclimate.com/github/fireguard/form)
 
+
+## Layout for package
+![Screenshot](examples/images/screenshot.png?raw=true "Screenshot")
+
+
+## Example
+[Example](examples/index.php)
+
