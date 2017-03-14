@@ -75,6 +75,15 @@ class HtmlHelper
         return !empty($options['required']) && $options['required'] === true;
     }
 
+    /**
+     * @param $options
+     * @return bool
+     */
+    public function isMultiple($options)
+    {
+        return !empty($options['multiple']) && $options['multiple'] === true;
+    }
+
 
     /**
      * @param array $options
