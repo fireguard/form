@@ -38,7 +38,7 @@ abstract class AbstractElement implements FormElementInterface
      *
      * @var array
      */
-    protected $skipValueTypes = ['file', 'password'];
+    protected $skipValueTypes = ['password', 'html'];
 
     /**
      * @var string

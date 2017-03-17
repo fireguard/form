@@ -1,0 +1,23 @@
+.image-update-component {
+
+  padding-top: 20px;
+  width: 100%;
+  text-align: center;
+
+  img, a {
+    width: 100%;
+    max-width: 120px;
+  }
+
+  .image-input-file {
+    position: relative;
+    float: right;
+    top: -34px;
+    height: 34px;
+    right: 0;
+    opacity:0;
+    -moz-opacity:0;
+    width: 100%;
+    z-index: 1000;
+  }
+}
