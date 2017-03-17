@@ -15,6 +15,8 @@ use Fireguard\Form\Contracts\FormElementInterface;
 use Fireguard\Form\Contracts\FormInputInterface;
 use Fireguard\Form\Elements\GroupElement;
 use Fireguard\Form\Elements\HiddenElement;
+use Fireguard\Form\Elements\RowCloseElement;
+use Fireguard\Form\Elements\RowOpenElement;
 use Fireguard\Form\Elements\TextElement;
 
 class FormTest extends \PHPUnit_Framework_TestCase
@@ -145,6 +147,23 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($element1, $form->getElementByName('input-1'));
 
         $this->assertEquals(null, $form->getElementByName('invalid-name'));
+    }
+
+    public function testOpenAndCloseRow()
+    {
+        $form = new Form();
+        $form->openRow();
+        $elements = $form->getElements();
+        $this->assertCount(1, $elements);
+        $this->assertInstanceOf(RowOpenElement::class, reset($elements));
+
+
+        $form = new Form();
+        $form->closeRow();
+        $elements = $form->getElements();
+        $this->assertCount(1, $elements);
+        $this->assertInstanceOf(RowCloseElement::class, reset($elements));
+
     }
 
 

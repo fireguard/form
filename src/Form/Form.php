@@ -12,9 +12,12 @@
 namespace Fireguard\Form;
 
 use Fireguard\Form\Contracts\FormElementInterface;
+use Fireguard\Form\Contracts\FormInputInterface;
 use Fireguard\Form\Contracts\FormModelInterface;
 use Fireguard\Form\Elements\GroupElement;
 use Fireguard\Form\Elements\HiddenElement;
+use Fireguard\Form\Elements\RowCloseElement;
+use Fireguard\Form\Elements\RowOpenElement;
 use Fireguard\Form\Exceptions\InvalidElementTypeException;
 use Fireguard\Form\Helpers\HtmlHelper;
 
@@ -65,7 +68,7 @@ class Form
      *
      * @var array
      */
-    protected $skipValueTypes = ['file', 'password'];
+    protected $skipValueTypes = ['password', 'html'];
 
     /**
      * FormBuilder constructor.
@@ -91,6 +94,18 @@ class Form
         return $this;
     }
 
+    public function openRow()
+    {
+        $this->elements[] = $this->createElement('row', RowOpenElement::class);
+        return $this;
+    }
+
+    public function closeRow()
+    {
+        $this->elements[] = $this->createElement('row', RowCloseElement::class);
+        return $this;
+    }
+
     /**
      * @param $field
      * @param $elementClass
@@ -104,8 +119,7 @@ class Form
         if (!class_exists($elementClass) ) {
             throw new InvalidElementTypeException('Class not found');
         }
-
-        $element = (new $elementClass($field))->setOptions($options);
+        $element = new $elementClass($field, $options);
         if (!in_array($element->getType(), $this->skipValueTypes )){
             $element->setValue($this->extractValueForModel($field, $defaultValue));
         }
@@ -131,9 +145,9 @@ class Form
         $group = new GroupElement($name, $options);
 
         foreach ($elements as $element) {
-            $value = $this->extractValueForModel($element[0], isset($element[3]) ? $element[3] : '');
+            $defaultValue =  isset($element[3]) ? $element[3] : '';
             $options = isset($element[2]) ? $element[2] : [];
-            $element = $this->createElement($element[0], $element[1], $options, $value);
+            $element = $this->createElement($element[0], $element[1], $options, $defaultValue);
             $group->appendElement( $element );
         }
         $this->elements[] = $group;
