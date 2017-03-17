@@ -21,6 +21,11 @@ class GroupElement extends AbstractElement implements FormGroupElementInterface
 {
     protected $elements = [];
 
+    public function getType()
+    {
+        return 'html';
+    }
+
     public function render()
     {
         $class = !empty($this->options['class']) ? $this->options['class'] : '';

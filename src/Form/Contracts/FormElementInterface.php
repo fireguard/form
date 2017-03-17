@@ -14,6 +14,11 @@ namespace Fireguard\Form\Contracts;
 interface FormElementInterface
 {
     /**
+     * @return string
+     */
+    public function getType();
+
+    /**
      * @return array
      */
     public function getOptions();

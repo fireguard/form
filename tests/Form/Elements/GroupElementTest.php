@@ -28,6 +28,11 @@ class GroupElementTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testGetType()
+    {
+        $this->assertEquals('html', $this->element->getType());
+    }
+
     public function testRender()
     {
         $element = new GroupElement('name-for-group');

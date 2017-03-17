@@ -13,8 +13,5 @@ namespace Fireguard\Form\Contracts;
 
 interface FormInputInterface
 {
-    /**
-     * @return string
-     */
-    public function getType();
+
 }

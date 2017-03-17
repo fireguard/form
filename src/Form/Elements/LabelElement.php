@@ -15,6 +15,11 @@ use Fireguard\Form\Contracts\FormElementInterface;
 
 class LabelElement extends AbstractElement implements FormElementInterface
 {
+    public function getType()
+    {
+        return 'html';
+    }
+
     public function render()
     {
         $value = $this->formatLabel($this->getName(), $this->getValue());

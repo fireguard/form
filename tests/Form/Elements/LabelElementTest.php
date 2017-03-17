@@ -22,6 +22,11 @@ class LabelElementTest extends \PHPUnit_Framework_TestCase
         $this->element = (new LabelElement('name-for-label'))->setValue('Value for Label');
     }
 
+    public function testGetType()
+    {
+        $this->assertEquals('html', $this->element->getType());
+    }
+
     public function testRender()
     {
         $this->assertEquals(
