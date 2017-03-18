@@ -71,6 +71,11 @@ class Form
     protected $skipValueTypes = ['password', 'html'];
 
     /**
+     * @var bool
+     */
+    protected $startAfterOnLoad = false;
+
+    /**
      * FormBuilder constructor.
      * @param FormModelInterface $model
      * @param array $options
@@ -79,6 +84,7 @@ class Form
     {
         $this->model = $model;
         $this->options = $options;
+        if (isset($this->options['after-onload'])) $this->startAfterOnLoad =  $this->options['after-onload'];
     }
 
     /**
@@ -255,11 +261,13 @@ class Form
 
     public function renderScripts()
     {
-        $scripts = '';
+        $scripts = 'jQuery(".btn-help").popover();';
         foreach ($this->elements as $element) {
             $scripts .= $element->getScripts();
         }
-        $scripts = '<script>var fn = function() { jQuery(".btn-help").popover(); '.$scripts.'}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script>';
+        if ($this->startAfterOnLoad) {
+            $scripts = 'var fn = function() { '.$scripts.'}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); }';
+        }
         return $scripts;
     }
 
@@ -276,7 +284,7 @@ class Form
         foreach ($this->elements as $element) {
             $html .= $element->render();
         }
-        if($withScripts) $html .= $this->renderScripts();
+        if($withScripts) $html .= '<script>'.$this->renderScripts().'</script>';
         $html .= '</form>';
         return $html;
     }

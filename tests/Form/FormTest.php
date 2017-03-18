@@ -108,7 +108,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><script>var fn = function() { jQuery(".btn-help").popover(); }; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><script>jQuery(".btn-help").popover();</script></form>',
             $form->renderWithScripts()
         );
 
@@ -116,7 +116,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form = (new Form())->setElements([$element]);
 
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>var fn = function() { jQuery(".btn-help").popover(); jQuery("#test").val();}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>jQuery(".btn-help").popover();jQuery("#test").val();</script></form>',
             $form->renderWithScripts()
         );
     }
@@ -125,7 +125,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
         $this->assertEquals(
-            '<script>var fn = function() { jQuery(".btn-help").popover(); }; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script>',
+            'jQuery(".btn-help").popover();',
             $form->renderScripts()
         );
 
@@ -133,7 +133,14 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form = (new Form())->setElements([$element]);
 
         $this->assertEquals(
-            '<script>var fn = function() { jQuery(".btn-help").popover(); jQuery("#test").val();}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); } </script>',
+            'jQuery(".btn-help").popover();jQuery("#test").val();',
+            $form->renderScripts()
+        );
+
+        $form = (new Form(null, ['after-onload' => true]))->setElements([$element]);
+
+        $this->assertEquals(
+            'var fn = function() { jQuery(".btn-help").popover();jQuery("#test").val();}; if (window.addEventListener) { window.addEventListener("load", fn, false); } else if (window.attachEvent) { window.attachEvent("onload", fn); }',
             $form->renderScripts()
         );
     }
