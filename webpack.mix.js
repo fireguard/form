@@ -1,12 +1,12 @@
 const { mix } = require('laravel-mix');
 
 mix
-    .copy('node_modules/jquery/dist/jquery.slim.min.js', 'public/dist/vendors/jquery.slim.min.js')
+    .sass('resources/assets/sass/form.scss', 'resources/dist/form.css')
 
+    .copy('node_modules/jquery/dist/jquery.slim.min.js', 'public/dist/vendors/jquery.slim.min.js')
     .copy('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/dist/vendors/bootstrap.min.js')
     .copy('node_modules/bootstrap/dist/css/bootstrap.min.css', 'public/dist/vendors/bootstrap.min.css')
     .copy('node_modules/bootstrap/dist/css/bootstrap.min.css.map', 'public/dist/vendors/bootstrap.min.css.map')
-
     .copy('node_modules/font-awesome/fonts', 'public/dist/fonts')
     .copy('node_modules/font-awesome/css/font-awesome.min.css', 'public/dist/vendors/font-awesome.min.css')
     .copy('node_modules/font-awesome/css/font-awesome.css.map', 'public/dist/vendors/font-awesome.css.map')
@@ -21,7 +21,6 @@ mix
     .copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css.map', 'public/dist/vendors/bootstrap-datepicker3.min.css.map')
     .copy('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', 'public/dist/vendors/bootstrap-datepicker.min.js')
     .copy('node_modules/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js', 'public/dist/vendors/bootstrap-datepicker.pt-BR.min.js')
-
-    .sass('resources/assets/sass/form.scss', 'public/dist');
+    .copy('public/dist/form.css', 'public/dist/form.css');
 
 

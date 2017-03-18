@@ -15,43 +15,56 @@ class ModelExample implements \Fireguard\Form\Contracts\FormModelInterface
 {
     public function getElementValue($field)
     {
+
+//        if ($field == 'image') return '/assets/images/logo-image.png';
         if ($field == 'checkbox2') return true;
         return '';
     }
 }
 
 try {
-    $form = (new \Fireguard\Form\Form(new ModelExample() , ['method' => 'DELETE', 'action' => '/action/example']))
+    $form = \Fireguard\Form\FormBuilder::create(new ModelExample(), ['method' => 'DELETE', 'action' => '/action/example', 'after-onload' => true])
         ->setToken('asdasdas')
-        ->addElement('name', \Fireguard\Form\Elements\TextElement::class, [
-            'label' => 'Name',
-            'help' => 'Aqui entra um texto de esclarecimento que pode ser tão grande quando o necessário',
-            'help-placement' => 'right',
-            'help-title' => 'Text for Title',
-            'grid' => 'col-xs-12',
-            'required' => true
-        ])
-        ->addElement('phone-mask', \Fireguard\Form\Elements\TextElement::class, [
-            'label' => 'Phone - Mask with DDD',
-            'grid' => 'col-xs-12 col-sm-6',
-            'required' => true,
-            'mask' =>  '(00) 0000-0000'
-        ])
-        ->addElement('value-mask', \Fireguard\Form\Elements\TextElement::class, [
-            'label' => 'Value - Mask Reverse',
-            'grid' => 'col-xs-12 col-sm-6',
-            'required' => true,
-            'mask' =>  '#.##0,00',
-            'mask-reverse' => true
-        ])
-        ->addElement('password', \Fireguard\Form\Elements\PasswordElement::class, [
-            'label' => 'Password',
-            'grid' => 'col-xs-12 col-sm-6',
-        ])
-        ->addElement('number', \Fireguard\Form\Elements\NumberElement::class, [
-            'label' => 'Number',
-            'grid' => 'col-xs-12 col-sm-6',
-        ])
+        ->openRow()
+        ->addGroup('base', [
+            ['name', \Fireguard\Form\Elements\TextElement::class, [
+                    'label' => 'Name',
+                    'help' => 'Aqui entra um texto de esclarecimento que pode ser tão grande quando o necessário',
+                    'help-placement' => 'right',
+                    'help-title' => 'Text for Title',
+                    'grid' => 'col-xs-12',
+                    'required' => true
+            ]],
+            ['phone-mask', \Fireguard\Form\Elements\TextElement::class, [
+                'label' => 'Phone - Mask with DDD',
+                'grid' => 'col-xs-12 col-sm-6',
+                'required' => true,
+                'mask' =>  '(00) 0000-0000'
+            ]],
+            ['value-mask', \Fireguard\Form\Elements\TextElement::class, [
+                'label' => 'Value - Mask Reverse',
+                'grid' => 'col-xs-12 col-sm-6',
+                'required' => true,
+                'mask' =>  '#.##0,00',
+                'mask-reverse' => true
+            ]],
+            ['password', \Fireguard\Form\Elements\PasswordElement::class, [
+                'label' => 'Password',
+                'grid' => 'col-xs-12 col-sm-6',
+            ]],
+            ['number', \Fireguard\Form\Elements\NumberElement::class, [
+                'label' => 'Number',
+                'grid' => 'col-xs-12 col-sm-6',
+            ]],
+
+        ], ['class'=> 'row', 'grid' => 'col-xs-12 col-sm-9 col-md-10'])
+        ->addGroup('image-group', [
+            ['image', \Fireguard\Form\Elements\ImageElement::class, [
+                'grid' => 'col-xs-12',
+                'required' => true
+            ]],
+        ], ['class'=> 'row', 'grid' => 'col-xs-12 col-sm-3 col-md-2'])
+        ->closeRow()->openRow()
         ->addElement('email', \Fireguard\Form\Elements\EmailElement::class, [
             'label' => 'Email',
             'grid' => 'col-xs-12 col-sm-4'
@@ -169,6 +182,7 @@ try {
                 'label' => 'Danger', 'icon' => 'fa-close', 'danger' => true, 'href' => '/',
             ]],
         ], ['class' => 'footer', 'grid' => 'col-xs-12'])
+        ->closeRow()
     ;
 
 }
@@ -177,8 +191,7 @@ catch (Error $e) { var_dump($e); }
 ?>
 
     <div class="container" style="padding-top: 20px;" >
-        <div class="row ">
-            <?php
+          <?php
               try {
                 echo $form->render();
               }
@@ -195,7 +208,7 @@ catch (Error $e) { var_dump($e); }
     <script src="dist/vendors/select2.min.js"></script>
     <script src="dist/vendors/select2-pt-BR.js"></script>
 
-    <?= $form->renderScripts(); ?>
+    <script><?= $form->renderScripts(); ?></script>
     <script>
       jQuery(".datepicker").datepicker({
           "language": "pt-BR",
