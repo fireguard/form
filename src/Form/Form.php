@@ -45,6 +45,11 @@ class Form
     protected $scripts = '';
 
     /**
+     * @var HtmlHelper
+     */
+    protected $html;
+
+    /**
      * @var array
      */
     private $options;
@@ -84,6 +89,8 @@ class Form
     {
         $this->model = $model;
         $this->options = $options;
+        $this->options['id'] = isset($this->options['id']) ? $this->options['id'] : 'form-default-id';
+        $this->html = new HtmlHelper();
         if (isset($this->options['after-onload'])) $this->startAfterOnLoad =  $this->options['after-onload'];
     }
 
@@ -165,6 +172,11 @@ class Form
       return $this->model instanceOf FormModelInterface ? $this->model->getElementValue($field) : $defaultValue;
     }
 
+    public function getId()
+    {
+        return $this->html->getIdAttribute($this->options);
+    }
+
     /**
      * @return string
      */
@@ -198,7 +210,7 @@ class Form
 
         $attributes = array_merge($attributes, array_diff_key($this->options, $this->reserved));
 
-        return '<form' . (new HtmlHelper())->attributes($attributes) . '>';
+        return '<form' . $this->html->attributes($attributes) . '>';
     }
 
     protected function getMethod()

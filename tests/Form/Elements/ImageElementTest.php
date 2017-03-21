@@ -27,7 +27,7 @@ class ImageElementTest extends \PHPUnit_Framework_TestCase
     public function testRender()
     {
         $this->assertEquals(
-            '<div class="image-update-component"><div class="image-component-box"><img id="image-name-for-image-id" src="/assets/images/logo-image.png" alt="Image"></div><a class="btn btn-primary"><i class="fa fa-camera"></i> Alterar</a><input name="name-for-image" class="form-control image-input-file" accept="image/*" id="name-for-image-id" type="file"></div>',
+            '<div class="image-update-component"><div class="image-component-box"><img id="image-name-for-image-id" src="/assets/images/logo-image.png" alt="Image"></div><a class="btn btn-primary"><i class="fa fa-camera"></i> Alterar</a><input name="name-for-image" class="form-control image-input-file" accept="image/*" id="name-for-image-id" type="file"><div class="error-message" id="name-for-image-input-message"></div></div>',
             $this->element->render()
         );
     }

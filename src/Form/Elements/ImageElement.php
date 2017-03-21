@@ -31,7 +31,11 @@ class ImageElement extends AbstractElement implements FormElementInterface, Form
     public function render()
     {
         $elementId = $this->html->getIdAttribute($this->options);
+
         $element = $this->createBoxPreviewImage($elementId).$this->createActionsElement();
+        if (!empty($options['before-input'])) $element =  $this->options['before-input'].$element;
+        if (!empty($options['after-input']))  $element .=  $this->options['after-input'];
+        $element .= $this->html->getDivError($this->options);
         return '<div class="image-update-component">'.$element.'</div>';
     }
 

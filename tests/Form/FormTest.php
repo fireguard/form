@@ -31,6 +31,14 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->form = new Form();
     }
 
+    public function testGetId()
+    {
+        $this->assertEquals('form-default-id', $this->form->getId());
+
+        $form = new Form(null, ['id' => 'id-for-form']);
+        $this->assertEquals('id-for-form', $form->getId());
+    }
+
     public function testGetSetToken()
     {
         $this->assertEquals(null, $this->form->getToken());
@@ -41,7 +49,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFormOpenTag()
     {
-        $this->assertEquals('<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form">', $this->form->getFormOpenTag());
+        $this->assertEquals('<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" id="form-default-id">', $this->form->getFormOpenTag());
 
     }
 
@@ -85,20 +93,20 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form(null, ['method' => 'DELETE']);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><input name="_method" id="_method-id" value="DELETE" type="hidden"></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" id="form-default-id"><input name="_method" id="_method-id" value="DELETE" type="hidden"></form>',
             $form->render()
         );
 
         $form = new Form();
         $form->addElement('name', TextElement::class);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" id="form-default-id"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div></form>',
             $form->render()
         );
 
         $form = new Form(null, ['files' => true]);
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" enctype="multipart/form-data"></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" enctype="multipart/form-data" id="form-default-id"></form>',
             $form->render()
         );
     }
@@ -108,7 +116,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = new Form();
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><script>jQuery(".btn-help").popover();</script></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" id="form-default-id"><script>jQuery(".btn-help").popover();</script></form>',
             $form->renderWithScripts()
         );
 
@@ -116,7 +124,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form = (new Form())->setElements([$element]);
 
         $this->assertEquals(
-            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>jQuery(".btn-help").popover();jQuery("#test").val();</script></form>',
+            '<form method="POST" action="" accept-charset="UTF-8" class="fireguard-form" id="form-default-id"><div id="name-form-group" class="form-group" ><input name="name" id="name-id" type="text" class="form-control "><div class="error-message" id="name-input-message"></div></div><script>jQuery(".btn-help").popover();jQuery("#test").val();</script></form>',
             $form->renderWithScripts()
         );
     }

@@ -1,5 +1,7 @@
 .fireguard-form {
 
+
+
   :required {
     border: 1px solid $primary-color;
   }
@@ -53,5 +55,11 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #ccc;
+  }
+
+  .error-message {
+    color: $brand-danger;
+    font-size: 0.9em;
+    margin-top: 2px;
   }
 }
