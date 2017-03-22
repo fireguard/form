@@ -59,6 +59,6 @@ class CheckBoxElement extends AbstractElement implements FormElementInterface, F
      */
     protected function isChecked()
     {
-        return $this->getValue() === true;
+        return $this->getValue() === 1 || $this->getValue() === true;
     }
 }

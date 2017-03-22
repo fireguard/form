@@ -69,6 +69,13 @@ class HtmlHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->html->isRequired(['required' => true]));
     }
 
+    public function testIsMultiple()
+    {
+        $this->assertEquals(false, $this->html->isMultiple([]));
+        $this->assertEquals(false, $this->html->isMultiple(['multiple' => 'true']));
+        $this->assertEquals(true, $this->html->isMultiple(['multiple' => true]));
+    }
+
     public function testGetElementAttributes()
     {
         $attributes = [

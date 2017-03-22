@@ -34,6 +34,12 @@ class SelectElement extends AbstractElement implements FormElementInterface, For
         return $this->makeElement($options, $html);
     }
 
+    public function getValue()
+    {
+        if(!is_array($this->value) ) return !empty($this->value) ? [$this->value] : [];
+        return $this->value;
+    }
+
     protected function appendScriptForSelect($options)
     {
         $placeholder = (!empty($options['placeholder']) ? $options['placeholder'] : 'Nenhum');
@@ -52,17 +58,16 @@ class SelectElement extends AbstractElement implements FormElementInterface, For
 
     protected function getOptionsForSelect($options)
     {
-        $currentValue = $this->getValue();
+        $currentValues = $this->getValue();
         $optionsHtml = '';
 
         if ( !empty($options['options']) && is_array($options['options'])){
 
             foreach ($options['options'] as $value => $text) {
-                $optionsHtml .= '<option value="'.$value.'" '.( $value === $currentValue ? 'selected="selected"' : '').'>'.$text.'</option>';
+                $optionsHtml .= '<option value="'.$value.'" '.( in_array($value, $currentValues) ? 'selected="selected"' : '').'>'.$text.'</option>';
             }
-
         }
-        if (empty($currentValue) && !$this->html->isRequired($options) && !$this->html->isMultiple($options)) {
+        if (empty($currentValues) && !$this->html->isRequired($options) && !$this->html->isMultiple($options)) {
             $optionsHtml .= '<option value="" selected="selected"></option>';
         }
         return $optionsHtml;

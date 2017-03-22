@@ -39,8 +39,21 @@ class SelectElementTest extends \PHPUnit_Framework_TestCase
             'grid' => 'col-xs-12 col-sm-4',
             'options' => [1 => 'Option 1', 2 => 'Option 2', 3 => 'Option 3']
         ]);
+        $element->setValue(1);
         $this->assertEquals(
-            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select</label><select  name="name-for-select" id="name-for-select-id" class="form-control "><option value="1" >Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option><option value="" selected="selected"></option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
+            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select</label><select  name="name-for-select" id="name-for-select-id" class="form-control "><option value="1" selected="selected">Option 1</option><option value="2" >Option 2</option><option value="3" >Option 3</option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
+            $element->render()
+        );
+
+        $element = new SelectElement('name-for-select', [
+            'label' => 'Select',
+            'grid' => 'col-xs-12 col-sm-4',
+            'options' => [1 => 'Option 1', 2 => 'Option 2', 3 => 'Option 3'],
+            'multiple' => true
+        ]);
+        $element->setValue([1, 2]);
+        $this->assertEquals(
+            '<div id="name-for-select-grid" class="col-xs-12 col-sm-4" ><div id="name-for-select-form-group" class="form-group" ><label for="name-for-select-id">Select</label><select  multiple name="name-for-select" id="name-for-select-id" class="form-control "><option value="1" selected="selected">Option 1</option><option value="2" selected="selected">Option 2</option><option value="3" >Option 3</option></select><div class="error-message" id="name-for-select-input-message"></div></div></div>',
             $element->render()
         );
     }

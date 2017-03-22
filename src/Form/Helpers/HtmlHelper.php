@@ -108,7 +108,8 @@ class HtmlHelper
     public function getDivError($options)
     {
         if (empty($options['name'])) return '';
-        return '<div class="error-message" id="'.$options['name'].'-input-message"></div>';
+        $name = str_replace('[', '', str_replace(']', '', $options['name']));
+        return '<div class="error-message" id="'.$name.'-input-message"></div>';
     }
 
     /**
